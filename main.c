@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hguini <hguini@student.42.fr>              +#+  +:+       +#+        */
+/*   By: scolen <scolen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/26 16:37:10 by hguini            #+#    #+#             */
-/*   Updated: 2021/04/10 18:19:31 by hguini           ###   ########.fr       */
+/*   Updated: 2021/04/27 09:57:13 by scolen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,11 @@ void check_write()
 	printf("%-20s: \"Libasm:%zu\"\n", "libasm", ft_write(1, empty, 0));
 	printf("\n");
 	printf("%-20s: \"%s\"\n", "char *", hello_world);
+	printf("\n\n\n\nTest_errno:\n");
 	printf("%-20s: \"Libc:%zu\"\n", "libc", write(-7, NULL, 7));
+	printf("libc_errno: %d\n", errno);
 	printf("%-20s: \"Libasm:%zu\"\n", "libasm", ft_write(-7, NULL, 7));
+	printf("libasm_errno: %d\n", errno);
 }
 
 void check_read()
@@ -167,6 +170,7 @@ void check_read()
 	fd = open("wrong", O_RDONLY);
 	printf("%-20s: \n", "wrong | libc ");
 	ret = read(fd, buff1, 890);
+	printf("errno_libc: %d\n", errno);
 	buff1[ret] = 0;
 	printf("[return : %d]\n|%s|\n", ret, buff1);
 	printf("\n");
@@ -175,6 +179,7 @@ void check_read()
 	clear_buffer(buff1, 891);
 	printf("%-20s: \n", "wrong | libasm ");
 	ret = ft_read(fd, buff1, 890);
+	printf("errno_libasm: %d\n", errno);
 	buff1[ret] = 0;
 	printf("[return : %d]\n|%s|\n", ret, buff1);
 	printf("\n");

@@ -6,12 +6,18 @@ section .text
 
 _ft_strdup:
         call _ft_strlen              ; rdi попадает в ft_strlen
-        add  rax, 1                  ; добавляем байт в rax, под \0
+        inc rax
+        ; add  rax, 1                  ; добавляем байт в rax, под \0
         push rdi                     ; сохраняем строчку на стеке
         mov  rdi, rax                ; ft_strlen, записывает длину в rax
         call _malloc                 ; вызов malloc с длиной rax
+        cmp rax, 0
+                je _error
         pop  rdi                     ; возвращаем строчку со стека
         mov  rsi, rdi                ; строку кидаем в dst
         mov  rdi, rax                ; dst кидаем выделеную память
         call _ft_strcpy              ; вызываем ft_strcpy
         ret                          ; возвращаем dst от ft_strcpy
+_error:
+        mov rax, -1
+        ret

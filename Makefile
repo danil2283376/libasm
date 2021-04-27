@@ -3,41 +3,46 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hguini <hguini@student.42.fr>              +#+  +:+       +#+         #
+#    By: scolen <scolen@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 19:36:58 by hguini            #+#    #+#              #
-#    Updated: 2021/04/07 20:23:27 by hguini           ###   ########.fr        #
+#    Updated: 2021/04/27 09:58:11 by scolen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libasm.a
 
-SRCS =	ft_strlen.s \
-		ft_strcpy.s \
-		ft_strcmp.s \
-		ft_write.s	\
-		ft_read.s	\
-		ft_strdup.s
+HEADER = libasm.h
 
-OBJS = $(SRCS:.s=.o)
+SRC =	ft_strlen.s\
+		ft_strcmp.s\
+		ft_strcpy.s\
+		ft_strdup.s\
+		ft_read.s\
+		ft_write.s
 
-%.o	: %.s
-	nasm -f macho64 $< -o $@
+OBJ = $(SRC:.s=.o)
 
-$(NAME): $(OBJS) 
-	ar rcs $(NAME) $(OBJS)
+FLAGS = -f macho64
 
-all: $(NAME)
+CC = gcc
 
-test:
-	gcc -Wall -Wextra -Werror libasm.a main.c -o test
-	./test
+%.o: %.s
+	nasm ${FLAGS}  $<
+
+all: ${NAME}
+	gcc main.c libasm.a
+	./a.out
+
+${NAME}: ${OBJ} ${HEADER}
+	ar -rcs ${NAME} ${OBJ}
 
 clean:
-	rm -f $(OBJS)
+	rm -f ${OBJ}
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f test
+	rm -f ${NAME} a.out
 
-re: fclean all
+re:
+	fclean
+	make all
